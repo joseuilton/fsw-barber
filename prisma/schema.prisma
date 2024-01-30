@@ -24,7 +24,7 @@ model Barbershop {
   address String
   services Service[]
   bookings Booking[]
-  imageURL String
+  imageUrl String
 }
 
 model Service {
@@ -32,7 +32,6 @@ model Service {
   name String
   description String
   price Decimal @db.Decimal(10, 2)
-  imageURL String
   bookings Booking[]
 
   barbershopId String
