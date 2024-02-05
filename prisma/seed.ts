@@ -90,7 +90,7 @@ async function seedDatabase() {
                 name: "Hidratação",
                 description: "Hidratação profunda para cabelo e barba.",
                 price: 25.0,
-                imageUrl: "Fios hidratados, macios e brilhantes.",
+                imageUrl: "https://utfs.io/f/e6bdffb6-24a9-455b-aba3-903c2c2b5bde-1jo6tu.png",
             },
         ];
 
@@ -115,6 +115,7 @@ async function seedDatabase() {
                         name: service.name,
                         description: service.description,
                         price: service.price,
+                        imageUrl: service.imageUrl,
                         barbershop: {
                             connect: {
                                 id: barbershop.id,
