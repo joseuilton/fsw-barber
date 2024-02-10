@@ -36,6 +36,7 @@ async function BarbershopDetailsPage(props: BarbershopDetailsPageProps) {
                     <ServiceItem
                         key={service.id}
                         service={service}
+                        barbershopName={barbershop.name}
                         isLogged={!!session?.user}
                     />
                 ))}

@@ -3,7 +3,6 @@ import { Card, CardContent } from "../ui/card"
 import { Button } from "../ui/button"
 import { Sheet, SheetTrigger} from "../ui/sheet"
 import { MenuIcon } from "lucide-react"
-import { signIn, signOut, useSession } from "next-auth/react"
 import { SideMenu } from "../SideMenu/side-menu"
 
 const Header = () => {
