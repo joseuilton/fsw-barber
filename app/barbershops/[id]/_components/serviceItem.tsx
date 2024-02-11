@@ -11,9 +11,13 @@ import { ChevronLeftIcon, ChevronRightIcon, Loader2 } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { CaptionProps, DayPicker, useNavigation } from "react-day-picker";
+import { CaptionProps, useNavigation } from "react-day-picker";
 import { getListHours } from "../_utils/hours";
 import { saveBooking } from "../_actions/save-booking";
+import { useToast } from "@/app/_components/ui/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface ServiceItemProps {
   service: Service;
@@ -57,6 +61,9 @@ function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedHour, setSelectedHour] = useState<string | undefined>();
   const [isLoadingBooking, setIsLoadingBooking] = useState<boolean>(false);
+  const [isOpenBookingSheet, setIsOpenBookingSheet] = useState<boolean>(false);
+
+  const { toast } = useToast();
 
   const hoursList = useMemo(() => {
     if (!selectedDate) return [];
@@ -81,15 +88,44 @@ function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
     setIsLoadingBooking(true);
 
     const timeSplit = selectedHour.split(":");
+    const newDate = setMinutes(
+      setHours(selectedDate, Number(timeSplit[0])), Number(timeSplit[1])
+    );
 
-    await saveBooking({
+    try {
+      await saveBooking({
         userId: user.id,
         barbershopId: service.barbershopId,
         serviceId: service.id,
-        date: setMinutes(setHours(selectedDate, Number(timeSplit[0])), Number(timeSplit[1]))
-    });
+        date: newDate
+      });
 
-    setIsLoadingBooking(false);
+      toast({
+        title: "Agendamento realizado com sucesso!",
+        description: format(newDate, "'para' dd 'de' MMMM 'às' HH':'mm'.'", {
+          locale: ptBR
+        }),
+        action: (
+          <ToastAction altText="Visualizar" asChild>
+            <Button asChild>
+              <Link href="/bookings">Visualizar</Link>
+            </Button>
+          </ToastAction>
+        )
+      });
+    } catch (e) {
+      toast({
+        variant: "destructive",
+        title: "Ops! Algo deu errado.",
+        description: "Algo parece não está funcionando muito bem, tente novamente mais tarde ou contate o suporte",
+      })
+    } finally {
+      setIsLoadingBooking(false);
+      setIsOpenBookingSheet(false);
+    }
+    
+
+    
   }
 
   return (
@@ -117,7 +153,10 @@ function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
               }).format(service.price)}
             </p>
 
-            <Sheet>
+            <Sheet
+              onOpenChange={setIsOpenBookingSheet}
+              open={isOpenBookingSheet}
+            >
               <SheetTrigger asChild>
                 <Button variant="secondary" onClick={handleReservation}>
                   Reservar
