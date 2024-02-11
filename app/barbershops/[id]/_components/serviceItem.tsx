@@ -4,20 +4,21 @@ import { Button } from "@/app/_components/ui/button";
 import { Calendar } from "@/app/_components/ui/calendar";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTrigger } from "@/app/_components/ui/sheet";
-import { Service } from "@prisma/client";
-import { format } from "date-fns";
+import { Service, User } from "@prisma/client";
+import { format, setHours, setMinutes } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, Loader2 } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { CaptionProps, DayPicker, useNavigation } from "react-day-picker";
 import { getListHours } from "../_utils/hours";
+import { saveBooking } from "../_actions/save-booking";
 
 interface ServiceItemProps {
   service: Service;
   barbershopName: string;
-  isLogged: boolean;
+  user: User | undefined;
 }
 
 function CustomCaption(props: CaptionProps) {
@@ -52,9 +53,10 @@ function CustomCaption(props: CaptionProps) {
   )
 }
 
-function ServiceItem({ service, isLogged, barbershopName }: ServiceItemProps) {
+function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedHour, setSelectedHour] = useState<string | undefined>();
+  const [isLoadingBooking, setIsLoadingBooking] = useState<boolean>(false);
 
   const hoursList = useMemo(() => {
     if (!selectedDate) return [];
@@ -63,7 +65,7 @@ function ServiceItem({ service, isLogged, barbershopName }: ServiceItemProps) {
   }, [selectedDate])
 
   async function handleReservation() {
-    if (!isLogged) {
+    if (!user) {
       await signIn("google")
     }
   }
@@ -71,6 +73,23 @@ function ServiceItem({ service, isLogged, barbershopName }: ServiceItemProps) {
   function handleSelectDate(date: Date | undefined) {
     setSelectedDate(date);
     setSelectedHour(undefined);
+  }
+
+  async function handleBooking() {
+    if (!selectedDate || !selectedHour) return;
+
+    setIsLoadingBooking(true);
+
+    const timeSplit = selectedHour.split(":");
+
+    await saveBooking({
+        userId: user.id,
+        barbershopId: service.barbershopId,
+        serviceId: service.id,
+        date: setMinutes(setHours(selectedDate, Number(timeSplit[0])), Number(timeSplit[1]))
+    });
+
+    setIsLoadingBooking(false);
   }
 
   return (
@@ -201,7 +220,14 @@ function ServiceItem({ service, isLogged, barbershopName }: ServiceItemProps) {
                 </div>
                 
                 <SheetFooter className="px-5 pb-6">
-                  <Button className="py-2 text-sm font-bold">Confirmar</Button>
+                  <Button
+                    disabled={!selectedDate || !selectedHour || isLoadingBooking}
+                    className="py-2 text-sm font-bold"
+                    onClick={handleBooking}
+                  >
+                    { isLoadingBooking && <Loader2 className="mr-2 w-4 h-4 animate-spin"/>}
+                    Confirmar
+                  </Button>
                 </SheetFooter>
               </SheetContent>
             </Sheet>

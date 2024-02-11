@@ -37,7 +37,7 @@ async function BarbershopDetailsPage(props: BarbershopDetailsPageProps) {
                         key={service.id}
                         service={service}
                         barbershopName={barbershop.name}
-                        isLogged={!!session?.user}
+                        user={session?.user}
                     />
                 ))}
             </div>
