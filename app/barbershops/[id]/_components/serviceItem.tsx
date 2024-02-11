@@ -4,13 +4,13 @@ import { Button } from "@/app/_components/ui/button";
 import { Calendar } from "@/app/_components/ui/calendar";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTrigger } from "@/app/_components/ui/sheet";
-import { Service, User } from "@prisma/client";
+import { Service, User, Booking } from "@prisma/client";
 import { format, setHours, setMinutes } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ChevronLeftIcon, ChevronRightIcon, Loader2 } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { CaptionProps, useNavigation } from "react-day-picker";
 import { getListHours } from "../_utils/hours";
 import { saveBooking } from "../_actions/save-booking";
@@ -18,6 +18,7 @@ import { useToast } from "@/app/_components/ui/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { getDayBookings } from "../_actions/get-day-bookings";
 
 interface ServiceItemProps {
   service: Service;
@@ -62,14 +63,23 @@ function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
   const [selectedHour, setSelectedHour] = useState<string | undefined>();
   const [isLoadingBooking, setIsLoadingBooking] = useState<boolean>(false);
   const [isOpenBookingSheet, setIsOpenBookingSheet] = useState<boolean>(false);
+  const [bookingsToDay, setBookingsToDay] = useState<Booking[] | undefined>(undefined);
 
   const { toast } = useToast();
 
   const hoursList = useMemo(() => {
     if (!selectedDate) return [];
 
-    return getListHours("09:00", "21:00", 45);
-  }, [selectedDate])
+    const hours = getListHours("09:00", "21:00", 45);
+
+    if (!bookingsToDay) return hours;
+
+    return hours.filter((hour) => {
+      const occurrence = bookingsToDay.find((booking) => booking === hour)
+
+      return !occurrence;
+    });
+  }, [selectedDate, bookingsToDay])
 
   async function handleReservation() {
     if (!user) {
@@ -81,6 +91,23 @@ function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
     setSelectedDate(date);
     setSelectedHour(undefined);
   }
+
+  useEffect(() => {
+    if (!selectedDate) return;
+
+    async function getBookings() {
+      const bookings = await getDayBookings({
+        date: selectedDate!,
+        serviceId: service.id
+      });
+
+      if (!bookings) return;
+
+      setBookingsToDay(bookings.map((booking) => format(booking.date, "HH':'mm")));
+    }
+
+    getBookings();
+  }, [selectedDate]);
 
   async function handleBooking() {
     if (!selectedDate || !selectedHour) return;
@@ -120,6 +147,9 @@ function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
         description: "Algo parece não está funcionando muito bem, tente novamente mais tarde ou contate o suporte",
       })
     } finally {
+      setSelectedDate(undefined);
+      setSelectedHour(undefined);
+
       setIsLoadingBooking(false);
       setIsOpenBookingSheet(false);
     }
