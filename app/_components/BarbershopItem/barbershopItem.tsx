@@ -23,9 +23,13 @@ const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
     <Card className="min-w-[167px] max-w-[167px] rounded-2xl">
       <CardContent className="px-1 py-1">
         <div className=" w-full h-[159px] relative">
-          <Badge className="flex gap-1.5 items-center absolute top-1 left-1 z-50 backdrop-blur-sm bg-primary/30">
+
+          <Badge
+            className="flex gap-1.5 items-center absolute top-1 left-1 z-50 backdrop-blur-sm 
+                       bg-primary/30 hover:bg-primary/30"
+          >
             <StarIcon className="fill-primary text-primary opacity-100" size={10} />
-            <span className="text-xs font-bold">5,0</span>
+            <span className="text-xs font-bold text-white">5,0</span>
           </Badge>
 
           <Image
@@ -41,12 +45,13 @@ const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
 
         <div className="px-3 pb-3">
           <h2
-            className="mt-2 font-bold text-base overflow-hidden text-ellipsis text-nowrap"
+            className="mt-2 font-bold text-base h-12 overflow-hidden text-ellipsis 
+                       text-nowrap"
           >
             {barbershop.name}
           </h2>
           <h3
-            className="mt-1 text-xs text-[#838896] overflow-hidden text-ellipsis text-nowrap"
+            className="mt-1 text-xs h-8 text-[#838896]"
           >
             {barbershop.address}
           </h3>

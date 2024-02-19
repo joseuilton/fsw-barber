@@ -1,19 +1,34 @@
+"use client";
+
 import { SideMenu } from "@/app/_components/SideMenu/side-menu";
 import { Button } from "@/app/_components/ui/button";
 import { Sheet, SheetTrigger } from "@/app/_components/ui/sheet";
 import { Barbershop } from "@prisma/client";
 import { ChevronLeftIcon, MapPinIcon, MenuIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface BarbershopInfoProps {
     barbershop: Barbershop;
 }
 
 function BarbershopInfo({ barbershop }: BarbershopInfoProps) {
+
+    const router = useRouter();
+
+    function handleBackToHome() {
+        router.replace("/");
+        return;
+    }
+
     return (
         <header className="pb-6 border-b border-secondary">
             <div className="relative min-h-[250px] max-h-[250px]">
-                <Button variant="secondary" className="absolute top-6 left-5 z-50 p-2.5">
+                <Button
+                    variant="secondary"
+                    className="absolute top-6 left-5 z-50 p-2.5"
+                    onClick={handleBackToHome}
+                >
                     <ChevronLeftIcon size={20} />
                 </Button>
                 <Sheet>

@@ -85,7 +85,7 @@ export function SideMenu() {
                         asChild
                         className="flex justify-start items-center gap-2 px-4 py-2 text-sm"
                     >
-                        <Link href="/" className="text-left">
+                        <Link href="/bookings" className="text-left">
                             <CalendarDaysIcon size={16} />
                             Agendamentos
                         </Link>
