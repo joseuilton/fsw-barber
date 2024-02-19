@@ -5,10 +5,29 @@ import { Search } from "./_components/search";
 import { BookingItem } from "../_components/BookingItem/bookingItem";
 import { db } from "../_lib/prisma"
 import { BarbershopItem } from "../_components/BarbershopItem/barbershopItem";
-import { Barbershop } from "@prisma/client";
+import { Barbershop, Booking } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default async function Home() {
-  const barbershops = await db.barbershop.findMany()
+  const session = await getServerSession(authOptions);
+
+  const [confirmedBookings, barbershops] = await Promise.all([
+    session?.user ? db.booking.findMany({
+      where: {
+        userId: (session.user as any).id,
+        date: {
+          gte: new Date()
+        }
+      },
+      include: {
+        barbershop: true,
+        service: true
+      }
+    }) : Promise.resolve([]),
+
+    db.barbershop.findMany()
+  ]);
 
   return (
     <div>
@@ -16,7 +35,7 @@ export default async function Home() {
 
       <div className="px-5 py-6">
         <h1 className="mb-1 text-xl font-bold">
-          Olá, Miguel!
+          {session?.user ? `Olá, ${session.user.name}!` : "Olá!"}
         </h1>
 
         <p className="capitalize text-sm">
@@ -31,8 +50,16 @@ export default async function Home() {
       </div>
 
       <div className="px-5 pt-9 pb-6">
-        {/* <h2 className="uppercase text-gray-400 text-xs font-bold mb-3">Agendamentos</h2>
-        <BookingItem />   */}
+        {confirmedBookings ? (
+          <>
+            <h2 className="uppercase text-gray-400 text-xs font-bold mb-3">Agendamentos</h2>
+            <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+              {confirmedBookings.map((booking: Booking) => (
+                <BookingItem key={booking.id} booking={booking} />
+              ))}
+            </div>
+          </>
+        ) : ""}
       </div>
 
       <div className="px-5">
