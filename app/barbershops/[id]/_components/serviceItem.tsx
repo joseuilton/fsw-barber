@@ -231,8 +231,8 @@ function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
                     <div
                       className={
                         `flex gap-3 items-center flex-nowrap overflow-x-auto py-6 
-                                                pl-5 border-y border-solid border-secondary
-                                                [&::-webkit-scrollbar]:hidden`
+                         pl-5 border-y border-solid border-secondary
+                        [&::-webkit-scrollbar]:hidden`
                       }
                     >
                       {hoursList.map((hour) => (

@@ -35,7 +35,7 @@ export default async function Home() {
 
       <div className="px-5 py-6">
         <h1 className="mb-1 text-xl font-bold">
-          {session?.user ? `Olá, ${session.user.name}!` : "Olá!"}
+          {session?.user ? `Olá, ${session.user.name?.split(" ")[0]}!` : "Olá!"}
         </h1>
 
         <p className="capitalize text-sm">

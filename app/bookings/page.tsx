@@ -50,23 +50,33 @@ async function BookingsPage() {
         <h1 className="text-xl font-bold">Agendamentos</h1>
 
         <div className="my-6">
-          <h2 className="font-bold text-[#838896] text-xs uppercase mb-3">Confirmados</h2>
+          {confirmedBookings.length > 0 && (
+            <>
+              <h2 className="font-bold text-[#838896] text-xs uppercase mb-3">Confirmados</h2>
 
-          <div className="flex flex-col gap-3">
-            {confirmedBookings.map((booking: Booking) => (
-              <BookingItem key={booking.id} booking={booking} />
-            ))}
-          </div>
+              <div className="flex flex-col gap-3">
+                {confirmedBookings.map((booking: Booking) => (
+                  <BookingItem key={booking.id} booking={booking} />
+                ))}
+              </div>
+            </>
+
+          )}
+
         </div>
 
         <div>
-          <h2 className="font-bold text-[#838896] text-xs uppercase mb-3">Finalizados</h2>
+          {finishedBookings.length > 0 && (
+            <>
+              <h2 className="font-bold text-[#838896] text-xs uppercase mb-3">Finalizados</h2>
 
-          <div className="flex flex-col gap-3">
-            {finishedBookings.map((booking: Booking) => (
-              <BookingItem key={booking.id} booking={booking} />
-            ))}
-          </div>
+              <div className="flex flex-col gap-3">
+                {finishedBookings.map((booking: Booking) => (
+                  <BookingItem key={booking.id} booking={booking} />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </main>
     </>
