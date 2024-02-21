@@ -1,10 +1,10 @@
 import { getServerSession } from "next-auth";
 import { Header } from "../_components/Header/header";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { db } from "../_lib/prisma";
 import { Booking } from "@prisma/client";
 import { BookingItem } from "../_components/BookingItem/bookingItem";
+import { authOptions } from "../_lib/auth";
 
 async function BookingsPage() {
   const session = await getServerSession(authOptions);
