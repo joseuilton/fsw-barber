@@ -5,7 +5,7 @@ import { Calendar } from "@/app/_components/ui/calendar";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTrigger } from "@/app/_components/ui/sheet";
 import { Service, User, Booking } from "@prisma/client";
-import { format, setHours, setMinutes } from "date-fns";
+import { format, isPast, isToday, setHours, setMinutes } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ChevronLeftIcon, ChevronRightIcon, Loader2 } from "lucide-react";
 import { signIn } from "next-auth/react";
@@ -70,7 +70,23 @@ function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
   const hoursList = useMemo(() => {
     if (!selectedDate) return [];
 
-    const hours = getListHours("09:00", "21:00", 45);
+    let hours = getListHours("09:00", "21:00", 45);
+
+    if (isToday(selectedDate)) {
+      const sliceIndex = hours.findLastIndex((hour) => {
+        const [currentHour, currentMinutes] = hour.split(":");
+        const currentDate = setHours(
+          setMinutes(selectedDate, Number(currentMinutes)),
+          Number(currentHour)
+        );
+
+        return isPast(currentDate);
+      });
+
+      if (sliceIndex !== -1) {
+        hours = hours.slice(sliceIndex + 1, -1);
+      }
+    }
 
     if (!bookingsToDay) return hours;
 
@@ -103,7 +119,7 @@ function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
 
       if (!bookings) return;
 
-      setBookingsToDay(bookings.map((booking) => format(booking.date, "HH':'mm")));
+      setBookingsToDay(bookings.map((booking: Booking) => format(booking.date, "HH':'mm")));
     }
 
     getBookings();
