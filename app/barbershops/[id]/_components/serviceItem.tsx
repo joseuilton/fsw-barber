@@ -19,6 +19,7 @@ import { ToastAction } from "@radix-ui/react-toast";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { getDayBookings } from "../_actions/get-day-bookings";
+import { BookingInfo } from "@/app/_components/BookingInfo/booking-info";
 
 interface ServiceItemProps {
   service: Service;
@@ -265,42 +266,23 @@ function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
                   )}
 
                   <div className="px-5 py-6">
-                    <Card className="">
-                      <CardContent className="flex flex-col gap-3 p-3">
-                        <div className="w-full flex justify-between items-center">
-                          <h2 className="text-base font-bold">{service.name}</h2>
-                          <h3 className="text-sm font-bold">{
-                            Intl.NumberFormat("pt-BR", {
-                              style: "currency",
-                              currency: "BRL"
-                            }).format(service.price)
-                          }</h3>
-                        </div>
-
-                        {selectedDate && (
-                          <div className="w-full flex justify-between items-center">
-                            <h3 className="text-sm text-gray-400">Data</h3>
-                            <p className="text-sm">
-                              {format(selectedDate, "dd' de 'MMMM", {
-                                locale: ptBR
-                              })}
-                            </p>
-                          </div>
-                        )}
-
-                        {selectedHour && (
-                          <div className="w-full flex justify-between items-center">
-                            <h3 className="text-sm text-gray-400">Horário</h3>
-                            <p className="text-sm">{selectedHour}</p>
-                          </div>
-                        )}
-
-                        <div className="w-full flex justify-between items-center">
-                          <h3 className="text-sm text-gray-400">Barbearia</h3>
-                          <p className="text-sm">{barbershopName}</p>
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <BookingInfo
+                      booking={{
+                        date: (selectedDate && selectedHour)
+                          ? setHours(
+                              setMinutes(
+                                selectedDate, 
+                                Number(selectedHour.split(":")[1])
+                              ), 
+                              Number(selectedHour.split(":")[0])
+                          )
+                          : undefined,
+                          service,
+                          barbershop: {
+                            name: barbershopName
+                          }
+                      }}
+                    />
                   </div>
                 </div>
                 
