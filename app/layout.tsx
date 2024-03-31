@@ -19,12 +19,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body className={`${inter.className} dark`}>
+      <body className={`${inter.className} dark overflow-x-hidden`}>
         <AuthProvider>
           <div className="flex-1">
             {children}
           </div>
-          <div className="mt-12">
+          <div className="mt-12 lg:mt-24">
             <Footer />
           </div>
           <Toaster />
