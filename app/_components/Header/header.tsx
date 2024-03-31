@@ -13,15 +13,21 @@ import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescript
 import { AlertDialogAction } from "@radix-ui/react-alert-dialog"
 import { useSession } from "next-auth/react";
 import { ProfileMenu } from "./_components/profile-menu";
+import { Search } from "@/app/(home)/_components/search";
 
-const Header = () => {
+interface HeaderProps {
+  variant?: "default" | "withSearch"
+}
+
+const Header = ({ variant = "default" }: HeaderProps) => {
   const session = useSession();
-
 
   return (
     <header>
       <Card>
-        <CardContent className="container mx-auto px-5 py-6 flex justify-between items-center lg:py-8">
+        <CardContent
+          className="container mx-auto px-5 py-6 flex justify-between items-center lg:py-8 lg:gap-11"
+        >
           <Link href={"/"}>
             <Image
               src={"/logo.png"}
@@ -30,6 +36,12 @@ const Header = () => {
               alt="Logo FSW Barber"
             />
           </Link>
+
+          {variant === "withSearch" && (
+            <div className="grow">
+              <Search />
+            </div>
+          )}
 
           <div className="hidden lg:flex items-center gap-6">
             <Button variant={"ghost"} asChild>

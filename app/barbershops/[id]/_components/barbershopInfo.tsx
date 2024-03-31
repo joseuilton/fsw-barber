@@ -22,23 +22,25 @@ function BarbershopInfo({ barbershop }: BarbershopInfoProps) {
     }
 
     return (
-        <header className="pb-6 border-b border-secondary">
-            <div className="relative min-h-[250px] max-h-[250px]">
+        <header className="pb-6 border-b border-secondary lg:border-b-0">
+            <div className="relative h-[250px] lg:h-[490px]">
                 <Button
                     variant="secondary"
-                    className="absolute top-6 left-5 z-50 p-2.5"
+                    className="absolute top-6 left-5 z-50 p-2.5 lg:hidden"
                     onClick={handleBackToHome}
                 >
                     <ChevronLeftIcon size={20} />
                 </Button>
-                <Sheet>
-                    <SheetTrigger asChild>
-                        <Button variant="secondary" className="absolute top-6 right-5 z-50 p-2.5">
-                            <MenuIcon size={20} />
-                        </Button>
-                    </SheetTrigger>
-                    <SideMenu />
-                </Sheet>
+                <div className="lg:hidden">
+                    <Sheet>
+                        <SheetTrigger asChild>
+                            <Button variant="secondary" className="absolute top-6 right-5 z-50 p-2.5">
+                                <MenuIcon size={20} />
+                            </Button>
+                        </SheetTrigger>
+                        <SideMenu />
+                    </Sheet>
+                </div>
 
                 <Image
                     src={barbershop.imageUrl}
@@ -47,20 +49,31 @@ function BarbershopInfo({ barbershop }: BarbershopInfoProps) {
                     style={{
                         objectFit: "cover"
                     }}
-                    className="opacity-85"
+                    className="opacity-85 lg:opacity-100 lg:rounded-lg"
                 />
             </div>
 
-            <div className="pt-3 px-5">
-                <h1 className="text-xl font-bold mb-3">{barbershop.name}</h1>
-                <p className="flex items-center gap-2 mb-2 text-sm">
-                    <MapPinIcon size={16} className="fill-primary stroke-primary" />
-                    {barbershop.address}
-                </p>
-                <p className="flex items-center gap-2 text-sm">
-                    <StarIcon size={16} className="fill-primary stroke-primary" />
-                    5,0 (889 avaliações)
-                </p>
+            <div className="pt-3 lg:pt-5 flex flex-col gap-2 lg:flex-row lg:justify-between">
+                <div>
+                    <h1 className="text-xl font-bold mb-3 lg:text-3xl">{barbershop.name}</h1>
+                    <p className="flex items-center gap-2 text-sm">
+                        <MapPinIcon size={16} className="fill-primary stroke-primary" />
+                        {barbershop.address}
+                    </p>
+                </div>
+                <div>
+                    <p className="text-sm lg:flex lg:flex-col lg:justify-center lg:items-center lg:gap-2
+                                  lg:py-2.5 lg:px-5 lg:rounded-lg lg:bg-[#1A1B1F]">
+                        <span className="flex items-center gap-2 lg:text-xl">
+                            <StarIcon
+                                size={16}
+                                className="fill-primary stroke-primary lg:w-[20px] lg:h-[20px]"
+                            />
+                            5,0
+                        </span>
+                        <span className="lg:text-xs">889 avaliações</span>
+                    </p>
+                </div>
             </div>
         </header>
     )

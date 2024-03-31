@@ -14,6 +14,7 @@ import { useState } from "react"
 import { cancelBooking } from "@/app/_actions/cancel-booking"
 import { Loader2 } from "lucide-react"
 import { BookingInfo } from "../BookingInfo/booking-info";
+import { BarbershopMap } from "../barbershopMap/barbershopMap";
 
 interface BookingItemProps {
   booking: Prisma.BookingGetPayload<{
@@ -83,34 +84,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
         </SheetHeader>
 
         <div className="mt-6 px-5">
-          <div className="min-h-[180px] w-full relative">
-            <div className="flex justify-center z-50 absolute left-0 bottom-4 w-full">
-              <Card className="py-3 px-5">
-                <CardContent className="p-0 flex gap-3 items-center">
-                  <Avatar className="min-w-[48px] min-h-[48px]">
-                    <AvatarImage src={booking.barbershop.imageUrl} />
-                    <AvatarFallback>{booking.barbershop.name}</AvatarFallback>
-                  </Avatar>
-
-                  <div>
-                    <h2 className="font-bold text-base">{booking.barbershop.name}</h2>
-                    <h3 className="overflow-hidden text-nowrap text-ellipsis text-xs">
-                      {booking.barbershop.address}
-                    </h3>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Image
-              src={"/barber-shop-map.png"}
-              alt={booking.barbershop.name}
-              fill
-              style={{
-                objectFit: "cover"
-              }}
-            />
-          </div>
+          <BarbershopMap barbershop={booking.barbershop} />
 
           <div className="my-6">
             <Badge variant={isConfirmedBooking ? "default" : "secondary"}>

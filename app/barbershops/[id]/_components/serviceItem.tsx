@@ -171,8 +171,6 @@ function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
       setIsOpenBookingSheet(false);
     }
     
-
-    
   }
 
   return (
@@ -189,7 +187,7 @@ function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
           />
         </div>
 
-        <div>
+        <div className="w-full">
           <h2 className="text-sm font-bold mb-1">{service.name}</h2>
           <p className="text-sm text-[#838896] mb-2.5">{service.description}</p>
           <div className="flex items-center justify-between">
@@ -209,7 +207,7 @@ function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
                   Reservar
                 </Button>
               </SheetTrigger>
-              <SheetContent className="w-11/12 p-0 border-0 overflow-y-auto">
+              <SheetContent className="p-0 border-0 overflow-y-auto">
                 <SheetHeader
                   className="px-5 py-6 text-left border-b border-solid border-secondary"
                 >
@@ -227,6 +225,9 @@ function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
                       Caption: CustomCaption
                     }}
                     styles={{
+                      month: {
+                        width: "100%",
+                      },
                       head_cell: {
                         width: "100%",
                         textTransform: "capitalize"
@@ -289,7 +290,7 @@ function ServiceItem({ service, user, barbershopName }: ServiceItemProps) {
                 <SheetFooter className="px-5 pb-6">
                   <Button
                     disabled={!selectedDate || !selectedHour || isLoadingBooking}
-                    className="py-2 text-sm font-bold"
+                    className="py-2 text-sm font-bold w-full"
                     onClick={handleBooking}
                   >
                     { isLoadingBooking && <Loader2 className="mr-2 w-4 h-4 animate-spin"/>}
