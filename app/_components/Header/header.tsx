@@ -16,10 +16,11 @@ import { ProfileMenu } from "./_components/profile-menu";
 import { Search } from "@/app/(home)/_components/search";
 
 interface HeaderProps {
-  variant?: "default" | "withSearch"
+  variant?: "default" | "withSearch";
+  searchText?: string | null;
 }
 
-const Header = ({ variant = "default" }: HeaderProps) => {
+const Header = ({ variant = "default", searchText = null }: HeaderProps) => {
   const session = useSession();
 
   return (
@@ -39,7 +40,7 @@ const Header = ({ variant = "default" }: HeaderProps) => {
 
           {variant === "withSearch" && (
             <div className="grow">
-              <Search />
+              <Search defaultValues={{ search: searchText || "" }} />
             </div>
           )}
 

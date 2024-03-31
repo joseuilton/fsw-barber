@@ -12,7 +12,7 @@ interface BarbershopsPageProps {
 }
 
 export default async function BarbershopsPage({ searchParams }: BarbershopsPageProps) {
-  
+
   if (!searchParams.search) {
     redirect("/");
   }
@@ -28,27 +28,33 @@ export default async function BarbershopsPage({ searchParams }: BarbershopsPageP
 
   return (
     <>
-      <Header />
+      <Header variant="withSearch" searchText={searchParams.search} />
 
-      <main className="px-5 py-6">
-        <Search
-          defaultValues={{
-            search: searchParams.search
-          }}
-        />
+      <main className="container mx-auto px-5 py-6 lg:py-10">
+        <div className="lg:hidden">
+          <Search
+            defaultValues={{
+              search: searchParams.search
+            }}
+          />
+        </div>
 
-        <h1 className="mt-6 mb-4 font-bold text-gray-400 text-xs uppercase">
+
+        <h1
+          className="mt-6 mb-4 font-bold text-gray-400 text-xs uppercase lg:mt-0 lg:text-white
+                     lg:text-xl lg:normal-case lg:mb-5"
+        >
           Resultados para &quot;{searchParams.search}&quot;
         </h1>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-5 lg:gap-5">
           {barbershops.map((barbershop: Barbershop) => (
             <div key={barbershop.id}>
               <BarbershopItem barbershop={barbershop} />
             </div>
           ))}
         </div>
-        
+
       </main>
     </>
   )
