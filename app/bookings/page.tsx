@@ -33,7 +33,7 @@ function BookingsPage() {
   const [isCancelBookingLoading, setIsCancelBookingLoading] = useState(false);
   const session = useSession();
   const router = useRouter();
-  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
   const BookingItemComponent = isMobile ? BookingItemSheet : BookingItem;
 
   if (session.status === "unauthenticated") {
