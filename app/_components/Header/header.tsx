@@ -39,7 +39,7 @@ const Header = ({ variant = "default", searchText = null }: HeaderProps) => {
           </Link>
 
           {variant === "withSearch" && (
-            <div className="grow">
+            <div className="grow hidden lg:block">
               <Search defaultValues={{ search: searchText || "" }} />
             </div>
           )}

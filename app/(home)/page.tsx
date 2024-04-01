@@ -10,6 +10,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../_lib/auth";
 import Image from "next/image";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../_components/ui/carousel";
+import { BookingItemSheet } from "../_components/BookingItem/bookingItemSheet";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -66,7 +67,7 @@ export default async function Home() {
                   <h2 className="uppercase text-gray-400 text-xs font-bold mb-3 lg:mb-5">
                     Agendamentos
                   </h2>
-                  <BookingItem booking={confirmedBooking} />
+                  <BookingItemSheet booking={confirmedBooking} />
                 </>
               ) : null}
             </div>

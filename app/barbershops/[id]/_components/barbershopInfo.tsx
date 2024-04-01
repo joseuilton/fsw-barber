@@ -62,7 +62,7 @@ function BarbershopInfo({ barbershop }: BarbershopInfoProps) {
                     </p>
                 </div>
                 <div>
-                    <p className="text-sm lg:flex lg:flex-col lg:justify-center lg:items-center lg:gap-2
+                    <p className="text-sm flex gap-2 lg:flex-col lg:justify-center lg:items-center
                                   lg:py-2.5 lg:px-5 lg:rounded-lg lg:bg-[#1A1B1F]">
                         <span className="flex items-center gap-2 lg:text-xl">
                             <StarIcon

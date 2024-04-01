@@ -1,20 +1,11 @@
 "use client";
 
-import { Booking, Prisma } from "@prisma/client"
+import { Prisma } from "@prisma/client"
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar"
 import { Badge } from "../ui/badge"
 import { Card, CardContent } from "../ui/card"
 import { format, isFuture } from "date-fns"
 import { ptBR } from "date-fns/locale"
-import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
-import Image from "next/image"
-import { Button } from "../ui/button"
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
-import { useState } from "react"
-import { cancelBooking } from "@/app/_actions/cancel-booking"
-import { Loader2 } from "lucide-react"
-import { BookingInfo } from "../BookingInfo/booking-info";
-import { BarbershopMap } from "../barbershopMap/barbershopMap";
 
 interface BookingItemProps {
   booking: Prisma.BookingGetPayload<{
@@ -25,122 +16,46 @@ interface BookingItemProps {
   }>
 }
 
-const BookingItem = ({ booking }: BookingItemProps) => {
-  const [isCancelBookingLoading, setIsCancelBookingLoading] = useState(false);
+export function BookingItem({ booking }: BookingItemProps) {
   const isConfirmedBooking = isFuture(booking.date);
 
-  async function handleCancelBookingClick() {
-    setIsCancelBookingLoading(true);
-
-    await cancelBooking(booking.id);
-
-    setIsCancelBookingLoading(false);
-  }
-
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Card className="min-w-full">
-          <CardContent className="px-0 py-0 flex">
-            <div className="p-3 grow">
-              <Badge variant={isConfirmedBooking ? "default" : "secondary"}>
-                {isConfirmedBooking ? "Confirmado" : "Finalizado"}
-              </Badge>
-              <h2 className="mt-3 mb-2 text-base font-bold">{booking.service.name}</h2>
+    <Card className="w-full cursor-pointer">
+      <CardContent className="px-0 py-0 flex">
+        <div className="p-3 grow">
+          <Badge variant={isConfirmedBooking ? "default" : "secondary"}>
+            {isConfirmedBooking ? "Confirmado" : "Finalizado"}
+          </Badge>
+          <h2 className="mt-3 mb-2 text-base font-bold">{booking.service.name}</h2>
 
-              <div className="flex items-center gap-2">
-                <Avatar>
-                  <AvatarImage
-                    src={booking.barbershop.imageUrl}
-                    alt="Imagem da barbearia"
-                    width={24}
-                    height={24}
-                  />
-                  <AvatarFallback className="text-sm">{booking.barbershop.name}</AvatarFallback>
-                </Avatar>
+          <div className="flex items-center gap-2">
+            <Avatar>
+              <AvatarImage
+                src={booking.barbershop.imageUrl}
+                alt="Imagem da barbearia"
+                width={24}
+                height={24}
+              />
+              <AvatarFallback className="text-sm">{booking.barbershop.name}</AvatarFallback>
+            </Avatar>
 
-                <h3 className="text-sm">{booking.barbershop.name}</h3>
-              </div>
-            </div>
-            <div className="flex flex-col justify-center items-center mw-[106px] px-7 border-l">
-              <p className="text-xs capitalize">
-                {format(booking.date, "MMMM", {
-                  locale: ptBR
-                })}
-              </p>
-              <p className="text-2xl">
-                {format(booking.date, "dd")}
-              </p>
-              <p className="text-xs">
-                {format(booking.date, "HH':'mm")}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </SheetTrigger>
-      <SheetContent className="p-0 border-none w-11/12 overflow-y-auto">
-        <SheetHeader className="px-5 py-6 border-b border-solid border-secondary text-left">
-          <SheetTitle>Informações da reserva</SheetTitle>
-        </SheetHeader>
-
-        <div className="mt-6 px-5">
-          <BarbershopMap barbershop={booking.barbershop} />
-
-          <div className="my-6">
-            <Badge variant={isConfirmedBooking ? "default" : "secondary"}>
-              {isConfirmedBooking ? "Confirmado" : "Finalizado"}
-            </Badge>
-
-            <div className="mt-3">
-              <BookingInfo booking={booking} />
-            </div>
+            <h3 className="text-sm">{booking.barbershop.name}</h3>
           </div>
-
-          {isConfirmedBooking && (
-            <div className="flex gap-3 mb-6">
-              <SheetClose className="w-full" asChild>
-                <Button variant="secondary">Voltar</Button>
-              </SheetClose>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button className="w-full" variant="destructive">
-                    Cancelar Reserva
-                  </Button>
-                </AlertDialogTrigger>
-
-                <AlertDialogContent className="border-none rounded-2xl w-4/5 p-5">
-                  <AlertDialogHeader>
-                    <AlertDialogTitle className="font-bold text-base">
-                      Cancelar Reserva
-                    </AlertDialogTitle>
-                    <AlertDialogDescription className="text-sm">
-                      Tem certeza que deseja cancelar esse agendamento?
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-
-                  <AlertDialogFooter className="flex flex-row items-center gap-2.5 mt-5">
-                    <AlertDialogCancel className="w-full m-0">Voltar</AlertDialogCancel>
-
-                    <AlertDialogAction
-                      disabled={isCancelBookingLoading}
-                      className="w-full"
-                      onClick={handleCancelBookingClick}
-                    >
-                      { isCancelBookingLoading && (
-                        <Loader2 className="mr-2 w-4 h-4 animate-spin"/>
-                      )}
-                      Confirmar
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
-          )}
         </div>
-      </SheetContent>
-    </Sheet>
-
+        <div className="flex flex-col justify-center items-center mw-[106px] px-7 border-l">
+          <p className="text-xs capitalize">
+            {format(booking.date, "MMMM", {
+              locale: ptBR
+            })}
+          </p>
+          <p className="text-2xl">
+            {format(booking.date, "dd")}
+          </p>
+          <p className="text-xs">
+            {format(booking.date, "HH':'mm")}
+          </p>
+        </div>
+      </CardContent>
+    </Card>
   )
 }
-
-export { BookingItem }

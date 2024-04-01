@@ -107,48 +107,51 @@ async function BarbershopDetailsPage(props: BarbershopDetailsPageProps) {
                             <Separator />
 
                             <table>
-                                <tr>
-                                    <th className="text-left text-sm font-normal text-[#838896]">
-                                        Segunda
-                                    </th>
-                                    <td className="text-right text-sm">Fechado</td>
-                                </tr>
-                                <tr>
-                                    <th className="text-left text-sm font-normal text-[#838896]">
-                                        Terça-feira
-                                    </th>
-                                    <td className="text-right text-sm">09:00 - 21:00</td>
-                                </tr>
-                                <tr>
-                                    <th className="text-left text-sm font-normal text-[#838896]">
-                                        Quarta-feira
-                                    </th>
-                                    <td className="text-right text-sm">09:00 - 21:00</td>
-                                </tr>
-                                <tr>
-                                    <th className="text-left text-sm font-normal text-[#838896]">
-                                        Quinta-feira
-                                    </th>
-                                    <td className="text-right text-sm">09:00 - 21:00</td>
-                                </tr>
-                                <tr>
-                                    <th className="text-left text-sm font-normal text-[#838896]">
-                                        Sexta-feira
-                                    </th>
-                                    <td className="text-right text-sm">09:00 - 21:00</td>
-                                </tr>
-                                <tr>
-                                    <th className="text-left text-sm font-normal text-[#838896]">
-                                        Sábado
-                                    </th>
-                                    <td className="text-right text-sm">08:00 - 17:00</td>
-                                </tr>
-                                <tr>
-                                    <th className="text-left text-sm font-normal text-[#838896]">
-                                        Domingo
-                                    </th>
-                                    <td className="text-right text-sm">Fechado</td>
-                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <th className="text-left text-sm font-normal text-[#838896]">
+                                            Segunda
+                                        </th>
+                                        <td className="text-right text-sm">Fechado</td>
+                                    </tr>
+                                    <tr>
+                                        <th className="text-left text-sm font-normal text-[#838896]">
+                                            Terça-feira
+                                        </th>
+                                        <td className="text-right text-sm">09:00 - 21:00</td>
+                                    </tr>
+                                    <tr>
+                                        <th className="text-left text-sm font-normal text-[#838896]">
+                                            Quarta-feira
+                                        </th>
+                                        <td className="text-right text-sm">09:00 - 21:00</td>
+                                    </tr>
+                                    <tr>
+                                        <th className="text-left text-sm font-normal text-[#838896]">
+                                            Quinta-feira
+                                        </th>
+                                        <td className="text-right text-sm">09:00 - 21:00</td>
+                                    </tr>
+                                    <tr>
+                                        <th className="text-left text-sm font-normal text-[#838896]">
+                                            Sexta-feira
+                                        </th>
+                                        <td className="text-right text-sm">09:00 - 21:00</td>
+                                    </tr>
+                                    <tr>
+                                        <th className="text-left text-sm font-normal text-[#838896]">
+                                            Sábado
+                                        </th>
+                                        <td className="text-right text-sm">08:00 - 17:00</td>
+                                    </tr>
+                                    <tr>
+                                        <th className="text-left text-sm font-normal text-[#838896]">
+                                            Domingo
+                                        </th>
+                                        <td className="text-right text-sm">Fechado</td>
+                                    </tr>
+                                </tbody>
+
                             </table>
 
                             <Separator />
