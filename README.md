@@ -57,10 +57,10 @@ To run the project on your machine, you must have <a href="https://nodejs.org/en
 ### Clone this repository
 ```bash
 # Clone this repository
-$ git clone git@github.com:joseuilton/myscret.git
+$ git clone git@github.com:joseuilton/fsw-barber.git
 
 # Go into the repository
-$ cd myscret
+$ cd fsw-barber
 ```
 
 ### Configure and run the application
