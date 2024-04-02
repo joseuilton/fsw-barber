@@ -25,7 +25,7 @@
 </div>
 
 
-<div style="width: 100%">
+<div align="center" style="width: 100%">
 <img src="readme-files/fsw-demo.gif" style="width: 100%" />
 </div>
 
